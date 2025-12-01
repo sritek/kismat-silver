@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import CategoryCarousel from "./category-carousel";
 import SectionHeading from "@/components/ui/section-heading";
 
@@ -11,10 +12,13 @@ export default function CategoriesSection() {
 
       <CategoryCarousel />
       <div className="container mx-auto max-w-7xl px-6 mt-12 md:mt-16 text-center">
-        <button className="inline-flex items-center space-x-2 border-b border-black pb-1 hover:text-primary hover:border-primary transition-colors uppercase tracking-widest text-[10px] md:text-xs font-bold">
+        <Link
+          href="/collections"
+          className="inline-flex items-center space-x-2 border-b border-black pb-1 hover:text-primary hover:border-primary transition-colors uppercase tracking-widest text-[10px] md:text-xs font-bold"
+        >
           <span>View Full Collection</span>
           <ArrowRight size={14} />
-        </button>
+        </Link>
       </div>
     </section>
   );

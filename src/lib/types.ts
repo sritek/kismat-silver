@@ -23,3 +23,14 @@ export interface Category {
   image: string;
 }
 
+export interface Collection {
+  id: number;
+  title: string;
+  subtitle: string;
+  image: string;
+  priceStart: number;
+  badge: string;
+  category: string;
+  materials: string[];
+}
+

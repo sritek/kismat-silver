@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { CATEGORIES } from "@/lib/data";
 import Image from "next/image";
 
@@ -19,8 +20,9 @@ export default function CategoryCarousel() {
     >
       <div className="flex animate-scroll-left hover:[animation-play-state:paused] w-max">
         {CATEGORIES.map((cat) => (
-          <div
+          <Link
             key={`first-${cat.id}`}
+            href="/collections"
             className="w-[50vw] md:w-[33.33vw] lg:w-[20vw] flex-shrink-0 relative group cursor-pointer border-r border-white/20"
           >
             <div className="aspect-[4/5] overflow-hidden relative">
@@ -38,11 +40,12 @@ export default function CategoryCarousel() {
                 </span>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
         {CATEGORIES.map((cat) => (
-          <div
+          <Link
             key={`second-${cat.id}`}
+            href="/collections"
             className="w-[50vw] md:w-[33.33vw] lg:w-[20vw] flex-shrink-0 relative group cursor-pointer border-r border-white/20"
           >
             <div className="aspect-[4/5] overflow-hidden relative">
@@ -60,7 +63,7 @@ export default function CategoryCarousel() {
                 </span>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
