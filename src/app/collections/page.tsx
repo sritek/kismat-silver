@@ -15,12 +15,14 @@ const ITEMS_PER_PAGE = 9;
 export default function CollectionsPage() {
   const [isMobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filters, setFilters] = useState({
+  const initialFilters = {
     categories: [] as string[],
     materials: [] as string[],
     priceRange: [MIN_PRICE, MAX_PRICE] as [number, number],
     sortBy: "featured",
-  });
+  };
+  const [filters, setFilters] = useState(initialFilters);
+  const [pendingFilters, setPendingFilters] = useState(initialFilters);
 
   const filteredCollections = useMemo(() => {
     let result: Collection[] = [...COLLECTIONS];
@@ -46,6 +48,11 @@ export default function CollectionsPage() {
     return result;
   }, [filters]);
 
+  // Always start at the top when this page loads.
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, []);
+
   // Pagination logic
   const totalPages = Math.ceil(filteredCollections.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -63,12 +70,14 @@ export default function CollectionsPage() {
   };
 
   const clearAllFilters = () => {
-    setFilters({
-      categories: [],
-      materials: [],
-      priceRange: [MIN_PRICE, MAX_PRICE],
-      sortBy: "featured",
-    });
+    setFilters(initialFilters);
+    setPendingFilters(initialFilters);
+  };
+
+  const applyFilters = () => {
+    setFilters(pendingFilters);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setMobileFilterOpen(false);
   };
 
   useEffect(() => {
@@ -104,9 +113,10 @@ export default function CollectionsPage() {
       <MobileFilterDrawer
         isOpen={isMobileFilterOpen}
         onClose={() => setMobileFilterOpen(false)}
-        filters={filters}
-        setFilters={setFilters}
+        filters={pendingFilters}
+        setFilters={setPendingFilters}
         onClearAll={clearAllFilters}
+        onApply={applyFilters}
         minPrice={MIN_PRICE}
         maxPrice={MAX_PRICE}
       />
@@ -150,9 +160,10 @@ export default function CollectionsPage() {
           {/* Desktop Sidebar (Left) */}
           <div className="hidden lg:block sticky top-32 h-fit">
             <FilterPanel
-              filters={filters}
-              setFilters={setFilters}
+              filters={pendingFilters}
+              setFilters={setPendingFilters}
               onClearAll={clearAllFilters}
+              onApply={applyFilters}
               minPrice={MIN_PRICE}
               maxPrice={MAX_PRICE}
             />
@@ -160,31 +171,6 @@ export default function CollectionsPage() {
 
           {/* Grid Area (Right) */}
           <div className="flex-1 w-full">
-            {/* Desktop Sort Bar */}
-            <div
-              className="hidden lg:flex items-center justify-between mb-12 pb-6 border-b border-stone-200 animate-fade-in-up"
-              style={{ animationDelay: "0.3s" }}
-            >
-              <div className="text-xs tracking-widest text-stone-500 uppercase">
-                Showing <span className="text-stone-900 font-bold">{filteredCollections.length}</span> results
-              </div>
-              <div className="flex items-center space-x-4">
-                <span className="text-xs tracking-widest text-stone-500 uppercase">Sort by:</span>
-                <div className="relative group">
-                  <select
-                    value={filters.sortBy}
-                    onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
-                    className="bg-transparent text-xs font-bold uppercase tracking-widest text-stone-900 focus:outline-none cursor-pointer hover:text-stone-600 transition-colors appearance-none pr-4"
-                  >
-                    <option value="featured">Featured</option>
-                    <option value="price_asc">Price: Low to High</option>
-                    <option value="price_desc">Price: High to Low</option>
-                  </select>
-                  <ChevronDown size={12} className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-stone-900" />
-                </div>
-              </div>
-            </div>
-
             {/* Grid */}
             <CollectionsGrid collections={paginatedCollections} />
 

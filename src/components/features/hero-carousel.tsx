@@ -62,7 +62,7 @@ export default function HeroCarousel() {
 
           <div className="absolute inset-0 z-20 flex flex-col justify-center items-center text-center text-white px-4 sm:px-6 md:px-8">
             <p
-              className={`text-[10px] sm:text-xs md:text-base tracking-[0.3em] uppercase mb-2 sm:mb-3 md:mb-4 transition-all duration-700 delay-300 ${
+              className={`text-xs sm:text-sm md:text-base tracking-[0.3em] uppercase mb-2 sm:mb-3 md:mb-4 transition-all duration-700 delay-300 ${
                 index === currentIndex
                   ? "translate-y-0 opacity-100"
                   : "translate-y-10 opacity-0"
@@ -71,7 +71,7 @@ export default function HeroCarousel() {
               New Collection
             </p>
             <h2
-              className={`font-serif text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl mb-3 sm:mb-4 md:mb-6 px-2 transition-all duration-700 delay-500 ${
+              className={`font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl mb-3 sm:mb-4 md:mb-6 px-2 transition-all duration-700 delay-500 ${
                 index === currentIndex
                   ? "translate-y-0 opacity-100"
                   : "translate-y-10 opacity-0"
@@ -80,7 +80,7 @@ export default function HeroCarousel() {
               {image.title}
             </h2>
             <p
-              className={`text-xs sm:text-sm md:text-lg lg:text-xl font-light mb-4 sm:mb-6 md:mb-8 max-w-[280px] sm:max-w-xs md:max-w-lg px-2 transition-all duration-700 delay-700 ${
+              className={`text-sm sm:text-base md:text-lg lg:text-xl font-light mb-4 sm:mb-6 md:mb-8 max-w-[320px] sm:max-w-xs md:max-w-lg px-2 transition-all duration-700 delay-700 ${
                 index === currentIndex
                   ? "translate-y-0 opacity-100"
                   : "translate-y-10 opacity-0"
@@ -89,7 +89,7 @@ export default function HeroCarousel() {
               {image.subtitle}
             </p>
             <button
-              className={`border border-white bg-transparent hover:bg-white hover:text-black text-white px-5 py-1.5 sm:px-6 sm:py-2 md:px-8 md:py-3 uppercase tracking-widest text-[9px] sm:text-[10px] md:text-sm transition-all duration-500 delay-900 ${
+              className={`border border-white bg-transparent hover:bg-white hover:text-black text-white px-6 py-2 sm:px-7 sm:py-2.5 md:px-8 md:py-3 uppercase tracking-widest text-xs sm:text-sm md:text-sm transition-all duration-500 delay-900 ${
                 index === currentIndex
                   ? "translate-y-0 opacity-100"
                   : "translate-y-10 opacity-0"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { CATEGORIES, MATERIALS, MIN_PRICE, MAX_PRICE } from "@/lib/collections-data";
 
@@ -102,6 +102,10 @@ interface PriceSliderProps {
 const PriceSlider = ({ min, max, value, onChange }: PriceSliderProps) => {
   const [localValue, setLocalValue] = useState<[number, number]>(value);
 
+  useEffect(() => {
+    setLocalValue(value);
+  }, [value]);
+
   const handleRangeChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const newValue: [number, number] = [...localValue];
     newValue[index] = Number(e.target.value);
@@ -117,7 +121,7 @@ const PriceSlider = ({ min, max, value, onChange }: PriceSliderProps) => {
   const percent2 = ((localValue[1] - min) / (max - min)) * 100;
 
   return (
-    <div className="px-1 py-4">
+    <div className="px-3 md:px-4 py-4">
       <style>{`
         .range-slider-input {
           -webkit-appearance: none;
@@ -226,6 +230,8 @@ interface FilterPanelProps {
   };
   setFilters: (filters: any) => void;
   onClearAll: () => void;
+  onApply?: () => void;
+  showApplyButton?: boolean;
   minPrice: number;
   maxPrice: number;
 }
@@ -235,9 +241,19 @@ export default function FilterPanel({
   filters,
   setFilters,
   onClearAll,
+  onApply,
+  showApplyButton = true,
   minPrice,
   maxPrice,
 }: FilterPanelProps) {
+  // Map material names to their SVG icons in /public/icons
+  const materialIcons: Record<string, string> = {
+    gold: "/icons/gold_svg.svg",
+    silver: "/icons/silver_svg.svg",
+    "rose gold": "/icons/rosegold_svg.svg",
+    diamond: "/icons/diamond.svg",
+  };
+
   const toggleCategory = (cat: string) => {
     const newCats = filters.categories.includes(cat)
       ? filters.categories.filter((c) => c !== cat)
@@ -267,29 +283,12 @@ export default function FilterPanel({
         <div className="filter-scrollable max-h-[calc(100vh-250px)] overflow-y-auto pr-2 -mr-2">
           <style jsx>{`
             .filter-scrollable {
-              scrollbar-width: thin;
+              scrollbar-width: none;
               scrollbar-color: transparent transparent;
             }
-            .filter-scrollable:hover {
-              scrollbar-color: rgba(191, 161, 129, 0.3) transparent;
-            }
             .filter-scrollable::-webkit-scrollbar {
-              width: 6px;
-            }
-            .filter-scrollable::-webkit-scrollbar-track {
-              background: transparent;
-            }
-            .filter-scrollable::-webkit-scrollbar-thumb {
-              background: transparent;
-              border-radius: 10px;
-              transition: background 0.3s ease;
-            }
-            .filter-scrollable:hover::-webkit-scrollbar-thumb,
-            .filter-scrollable:active::-webkit-scrollbar-thumb {
-              background: rgba(191, 161, 129, 0.4);
-            }
-            .filter-scrollable::-webkit-scrollbar-thumb:hover {
-              background: rgba(191, 161, 129, 0.6);
+              width: 0;
+              height: 0;
             }
           `}</style>
           <FilterSection title="Category">
@@ -306,24 +305,37 @@ export default function FilterPanel({
           <div className="flex flex-wrap gap-3">
             {MATERIALS.map((mat, i) => {
               const isSelected = filters.materials.includes(mat.name);
+              const iconSrc = materialIcons[mat.name.toLowerCase()];
               return (
                 <div
                   key={i}
                   onClick={() => toggleMaterial(mat.name)}
                   className={`flex flex-col items-center cursor-pointer group p-2 rounded-md transition-all duration-300 ${
-                    isSelected ? "bg-stone-100 ring-1 ring-stone-200" : "hover:bg-stone-50"
+                    isSelected
+                      ? "bg-white ring-1 ring-primary/40 shadow-sm scale-[1.02]"
+                      : "hover:bg-stone-50"
                   }`}
                 >
                   <div
-                    className={`w-6 h-6 rounded-full ${mat.color} shadow-sm mb-2 transition-transform duration-300 ${
+                    className={`w-8 h-8 rounded-full shadow-sm mb-2 border border-stone-200 transition-transform duration-300 overflow-hidden flex items-center justify-center ${
                       isSelected
-                        ? "scale-110 ring-2 ring-offset-2 ring-offset-white ring-stone-300"
+                        ? "scale-110 ring-2 ring-offset-2 ring-offset-white ring-primary/50"
                         : "group-hover:scale-110"
                     }`}
-                  ></div>
+                    style={{ backgroundColor: mat.color }}
+                  >
+                    {iconSrc ? (
+                      <img
+                        src={iconSrc}
+                        alt={mat.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : null}
+                  </div>
                   <span
                     className={`text-[9px] uppercase tracking-wider ${
-                      isSelected ? "text-stone-900 font-bold" : "text-stone-500 group-hover:text-stone-700"
+                      isSelected ? "text-primary font-bold" : "text-stone-500 group-hover:text-stone-700"
                     }`}
                   >
                     {mat.name}
@@ -359,6 +371,14 @@ export default function FilterPanel({
           />
         </FilterSection>
         </div>
+        {showApplyButton && (
+          <button
+            onClick={onApply}
+            className="w-full mt-6 bg-stone-900 text-white py-3 text-xs font-bold uppercase tracking-[0.3em] hover:bg-stone-800 transition-colors rounded-sm shadow-sm"
+          >
+            Apply Filters
+          </button>
+        )}
       </div>
     </aside>
   );

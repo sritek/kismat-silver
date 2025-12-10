@@ -50,7 +50,7 @@ export default function SoulStoneMatcher() {
           <Button
             onClick={handleMatch}
             disabled={loading}
-            className="w-full md:w-auto whitespace-nowrap flex items-center justify-center gap-2"
+            className="w-full md:w-auto whitespace-nowrap flex items-center justify-center gap-2 px-6 py-3 rounded-sm shadow-md shadow-black/10 border border-black/5 text-sm font-semibold"
           >
             {loading ? "Revealing..." : "Reveal"}
           </Button>

@@ -24,7 +24,8 @@ export default function Navbar() {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setScrolled(window.scrollY > 50);
+          // Toggle to scrolled state almost immediately when leaving the very top.
+          setScrolled(window.scrollY > 5);
           ticking = false;
         });
         ticking = true;
@@ -62,8 +63,8 @@ export default function Navbar() {
   // and does not affect the document flow (prevents height/gap issues).
   // On Collections and Contact pages, always use fixed with scrolled styles
   const navClasses = scrolled || isCollectionsPage || isContactPage
-    ? `fixed top-0 left-0 w-full bg-background/95 backdrop-blur-md shadow-sm pt-6 pb-4 md:pt-5 md:pb-5 min-h-[72px] text-gray-900 ${navZIndex}`
-    : `absolute top-14 md:top-16 left-0 w-full bg-transparent py-4 md:py-6 min-h-[72px] text-white ${navZIndex}`;
+    ? `fixed top-0 left-0 w-full bg-background/95 backdrop-blur-md shadow-sm pt-9 pb-5 md:pt-8 md:pb-6 min-h-[72px] text-gray-900 ${navZIndex}`
+    : `absolute top-14 md:top-16 left-0 w-full bg-transparent py-6 md:py-7 min-h-[72px] text-white ${navZIndex}`;
 
   return (
     <>
@@ -151,7 +152,7 @@ export default function Navbar() {
 
       {/* Mobile Drawer - Collections Style */}
       <div
-        className={`fixed inset-0 bg-white z-[60] transform transition-transform duration-300 lg:hidden ${
+        className={`fixed inset-0 bg-white z-[60] transform transition-transform duration-300 overflow-y-auto lg:hidden ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

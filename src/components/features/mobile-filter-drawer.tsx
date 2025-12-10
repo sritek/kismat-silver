@@ -14,6 +14,7 @@ interface MobileFilterDrawerProps {
   };
   setFilters: (filters: any) => void;
   onClearAll: () => void;
+  onApply: () => void;
   minPrice: number;
   maxPrice: number;
 }
@@ -24,6 +25,7 @@ export default function MobileFilterDrawer({
   filters,
   setFilters,
   onClearAll,
+  onApply,
   minPrice,
   maxPrice,
 }: MobileFilterDrawerProps) {
@@ -55,11 +57,16 @@ export default function MobileFilterDrawer({
             filters={filters}
             setFilters={setFilters}
             onClearAll={onClearAll}
+            onApply={onApply}
+            showApplyButton={false}
             minPrice={minPrice}
             maxPrice={maxPrice}
           />
           <button
-            onClick={onClose}
+            onClick={() => {
+              onApply();
+              onClose();
+            }}
             className="w-full mt-6 bg-stone-900 text-white py-4 text-sm font-bold uppercase tracking-widest hover:bg-stone-800 transition-colors rounded-sm sticky bottom-4 shadow-xl"
           >
             View Results
@@ -69,4 +76,6 @@ export default function MobileFilterDrawer({
     </>
   );
 }
+
+
 

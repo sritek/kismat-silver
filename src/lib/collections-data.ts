@@ -3,10 +3,10 @@ import { Collection } from "./types";
 export const CATEGORIES = ["Rings", "Necklaces", "Earrings", "Bracelets", "Pendants", "Bridal Sets"];
 
 export const MATERIALS = [
-  { name: "Gold", color: "bg-[#FFD700]" },
-  { name: "Silver", color: "bg-[#C0C0C0]" },
-  { name: "Rose Gold", color: "bg-[#B76E79]" },
-  { name: "Diamond", color: "bg-[#E0F7FA]" },
+  { name: "Gold", color: "#FFD700" },
+  { name: "Silver", color: "#C0C0C0" },
+  { name: "Rose Gold", color: "#B76E79" },
+  { name: "Diamond", color: "#E0F7FA" },
 ];
 
 export const COLLECTIONS: Collection[] = [
